@@ -60,12 +60,12 @@ main :: proc() {
 
     defer sdl.Quit()
 
-    window := sdl.CreateWindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, {.OPENGL, .RESIZABLE})
-    defer sdl.DestroyWindow(window)
-
     sdl.GL_SetAttribute(.CONTEXT_PROFILE_MASK, i32(sdl.GLProfile.CORE))
     sdl.GL_SetAttribute(.CONTEXT_MAJOR_VERSION, GL_VERSION_MAJOR)
     sdl.GL_SetAttribute(.CONTEXT_MINOR_VERSION, GL_VERSION_MINOR)
+
+    window := sdl.CreateWindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, {.OPENGL, .RESIZABLE})
+    defer sdl.DestroyWindow(window)
 
     gl_context := sdl.GL_CreateContext(window)
     defer sdl.GL_DestroyContext(gl_context)
