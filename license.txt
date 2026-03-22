@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 EpsilonBSP, Denis Stromberg
+Copyright (c) 2026 Deniss Štrombergs, epsilonbsp
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
