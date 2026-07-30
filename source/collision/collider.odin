@@ -67,30 +67,31 @@ calc_collider_radius :: proc(collider: ^Collider) -> f32 {
 
 support :: proc(collider: Collider, dir: glm.vec3) -> glm.vec3 {
     dir := glm.normalize(dir)
+    local_dir := glm.quatMulVec3(conj(collider.rotation), dir)
     result: glm.vec3
 
     switch collider.type {
     case .BOX:
         result = {
-            dir.x < 0 ? -collider.extent.x : collider.extent.x,
-            dir.y < 0 ? -collider.extent.y : collider.extent.y,
-            dir.z < 0 ? -collider.extent.z : collider.extent.z
+            local_dir.x < 0 ? -collider.extent.x : collider.extent.x,
+            local_dir.y < 0 ? -collider.extent.y : collider.extent.y,
+            local_dir.z < 0 ? -collider.extent.z : collider.extent.z
         }
     case .SPHERE:
-        result = dir * collider.extent.x
+        result = local_dir * collider.extent.x
     case .CAPSULE:
-        result = dir * collider.extent.x
-        result.y += dir.y > 0 ? collider.extent.y : -collider.extent.y
+        result = local_dir * collider.extent.x
+        result.y += local_dir.y > 0 ? collider.extent.y : -collider.extent.y
     case .CYLINDER:
-        result = glm.normalize(glm.vec3{dir.x, 0, dir.z}) * collider.extent.x
-        result.y = dir.y > 0 ? collider.extent.y : -collider.extent.y
+        result = glm.normalize(glm.vec3{local_dir.x, 0, local_dir.z}) * collider.extent.x
+        result.y = local_dir.y > 0 ? collider.extent.y : -collider.extent.y
     case .HULL:
         vertex_max := collider.vertices[0]
-        dot_max := glm.dot(vertex_max, dir)
+        dot_max := glm.dot(vertex_max, local_dir)
 
         for i in 1 ..< len(collider.vertices) {
             vertex := collider.vertices[i]
-            dot := glm.dot(vertex, dir)
+            dot := glm.dot(vertex, local_dir)
 
             if dot > dot_max {
                 vertex_max = vertex
